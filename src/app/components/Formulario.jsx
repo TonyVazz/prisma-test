@@ -6,6 +6,7 @@ export const Formulario = () => {
   const [data, setData] = useState({})
   const [estudiantes, setEstudiantes] = useState([])
   const [actualizarEstudiante, setActualizarEstudiante] = useState(null)
+ 
 
   
   useEffect ( () => {
@@ -19,7 +20,7 @@ export const Formulario = () => {
 
     if(actualizarEstudiante){
       await fetch(`/api/registros/${actualizarEstudiante.id}`,{method:'PUT', body: JSON.stringify(data)});
-      setActualizarEstudiante(null);
+      setActualizarEstudiante(false);
 
       const estudiantesActualizados = await fetch('/api/registros').then((res) => res.json());
       setEstudiantes(estudiantesActualizados)
@@ -37,6 +38,7 @@ export const Formulario = () => {
     setActualizarEstudiante(estudiante);
     setData(estudiante);
     console.log(estudiante)
+
   }
 
   async function handleEliminarEstudiante(estudianteId){
@@ -44,6 +46,7 @@ export const Formulario = () => {
     await fetch(`/api/registros/${estudianteId}`,{method: 'DELETE',});
     //actualizar los estudiantes
     setEstudiantes(estudiantes.filter((estudiante) => estudiante.id !== estudianteId))
+   
   }
 
   
@@ -54,25 +57,26 @@ export const Formulario = () => {
 <div className="flex flex-col items-center justify-center h-screen">
   <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
     <h2 className="text-2xl font-bold text-gray-900 mb-4">Student</h2>
+    
 
     <form onSubmit={handleSubmit} className="flex flex-col">
       <label  htmlFor="name">Name</label>
       <input onChange={(e) =>{
         setData({...data, nombre:e.target.value})
-      }} id='name' name='name' type="text" value={data.nombre || (actualizarEstudiante ? actualizarEstudiante.nombre: '')} className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" placeholder="Full Name"/>
+      }} id='name' name='name' type="text" value={data.nombre || ''} className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" placeholder="Full Name"/>
       <label htmlFor="age">Age</label>
       <input onChange={(e) =>{
         setData({...data, edad:Number(e.target.value)})
-      }} id='age' name='age' type="number" value={data.edad || (actualizarEstudiante ? actualizarEstudiante.edad: '')} className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" placeholder="Age"/>
+      }} id='age' name='age' type="number" value={data.edad ||''} className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" placeholder="Age"/>
       <label htmlFor="gender">Gender</label>
       <input onChange={(e) =>{
         setData({...data, genero:e.target.value})
-      }} id='gender' name='gender' type="text" value={data.genero || (actualizarEstudiante ? actualizarEstudiante.genero: '')} className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" placeholder="Gender"/>
+      }} id='gender' name='gender' type="text" value={data.genero ||''} className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" placeholder="Gender"/>
       <label htmlFor="career">Career</label>
       <input onChange={(e) =>{
         setData({...data, carrera:e.target.value})
-      }} id='career' name='career' type="text" value={data.carrera || (actualizarEstudiante ? actualizarEstudiante.carrera: '')} className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" placeholder="Career"/>
-      <button type="submit" className="bg-gradient-to-r from-indigo-500 to-blue-500 text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-indigo-600 hover:to-blue-600 transition ease-in-out duration-150">Add Student</button>
+      }} id='career' name='career' type="text" value={data.carrera ||''} className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" placeholder="Career"/>
+      <button type="submit" className="bg-gradient-to-r from-indigo-500 to-blue-500 text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-indigo-600 hover:to-blue-600 transition ease-in-out duration-150">{actualizarEstudiante ? "Update Student" : "Add Student"}</button>
     </form>
   </div>
 </div>
