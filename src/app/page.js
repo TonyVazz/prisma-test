@@ -3,7 +3,9 @@ import Formulario from './components/Formulario'
 
 export default function Home() {
   return (
-   
-   <Formulario/>
+   <div className='bg-gray-800'>
+
+     <Formulario/>
+   </div>
   )
 }
